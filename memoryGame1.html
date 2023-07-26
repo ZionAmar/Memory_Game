@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    #time {
+      position: relative;
+      right: 20%;
+    }
+    #points {
+      position: relative;
+      left: 20%;
+    }
+    #boardGame {
+      width: 900px;
+      height: 600px;
+      margin: 0 auto;
+      display: block;
+      grid-template-columns: repeat(6, 1fr);
+      border: 2px black solid;
+      grid-gap: 0.5em;
+    }
+    @media screen and (max-width: 1000px) {
+      #boardGame {
+        width: 860px;
+        height: 1700px;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 0.2 em;
+      }
+    }
+    #btn {
+      font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+      width: 100%;
+      height: 100%;
+      background-color: wheat;
+      font-size: 400%;
+    }
+    .box {
+      font-size: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <head>
+    <title>Memory Game</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body onload="startGame()">
+    <center>
+      <div id="bar">
+        <span id="points">נקודות:0</span>
+        <span>משחק הזכרון</span>
+        <span id="time">טיימר:0:00:00</span>
+      </div>
+      <section id="boardGame"></section>
+    </center>
+    <script>
+      let cardsAry = [
+        "&#128512;",
+        "&#128151;",
+        "&#128514;",
+        "&#129409;",
+        "&#9748;",
+        "&#9749;",
+        "&#9924;",
+        "&#9940;",
+        "&#127752;",
+        "&#127769;",
+        "&#127796;",
+        "&#127799;",
+        "&#128512;",
+        "&#128151;",
+        "&#128514;",
+        "&#129409;",
+        "&#9748;",
+        "&#9749;",
+        "&#9924;",
+        "&#9940;",
+        "&#127752;",
+        "&#127769;",
+        "&#127796;",
+        "&#127799;",
+      ];
+      let boardGame = document.getElementById("boardGame");
+      let tagAry = [];
+      let valAry = [];
+      let score = 0;
+      let sec = 0;
+      let min = 0;
+      let how = 0;
+      let timer = 0;
+      function myTime() {
+        sec++;
+        let d = new Date(2012, 4, 18, how, min, sec);
+        document.getElementById("time").innerHTML =
+          "טיימר:" + d.toLocaleTimeString();
+        if (score == 12) {
+          clearInterval(timer);
+          setTimeout(
+            alert("כל הכבוד סיימתם ב...   " + d.toLocaleTimeString()),
+            500
+          );
+          setTimeout(startGame(), 500);
+        }
+      }
+      function randomCardsAry() {
+        timer = setInterval(myTime, 1000);
+        for (let i = cardsAry.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          let k = cardsAry[i];
+          cardsAry[i] = cardsAry[j];
+          cardsAry[j] = k;
+        }
+        showCardsAry(cardsAry);
+      }
+      function showCardsAry(cardsAry) {
+        let textCards = "";
+        for (let x of cardsAry) {
+          textCards += `<div class="box" tabindex="-1" onclick="showThisNum(this,'${x}')">&#127183;</div>`;
+          boardGame.style.display = "grid";
+          boardGame.innerHTML = textCards;
+        }
+      }
+      function showThisNum(tag, val) {
+        if (!valAry[1]) {
+          tag.innerHTML = val;
+          saveValAndTag(tag, val);
+        }
+      }
+      function saveValAndTag(tag, val) {
+        if (tagAry[0] != tag) {
+          if (!valAry[0]) {
+            valAry[0] = val;
+            tagAry[0] = tag;
+          } else {
+            valAry[1] = val;
+            tagAry[1] = tag;
+            check2Nums(valAry, tagAry);
+          }
+        }
+      }
+      function check2Nums(valAry, tagAry) {
+        if (valAry[0] == valAry[1]) {
+          tagAry[0].onclick = "";
+          tagAry[1].onclick = "";
+          score++;
+          document.getElementById("points").innerHTML = `נקודות:${score}`;
+          valAry[0] = "";
+          valAry[1] = "";
+        } else {
+          setTimeout(ipus, 1000);
+        }
+        function ipus() {
+          tagAry[0].innerHTML = "&#127183;";
+          tagAry[1].innerHTML = "&#127183;";
+          valAry[0] = "";
+          valAry[1] = "";
+        }
+      }
+      function startGame() {
+        score = 0;
+        sec = 0;
+        min = 0;
+        how = 0;
+        document.getElementById("time").innerHTML = `טיימר:0:00:00`;
+        document.getElementById("points").innerHTML = `נקודות:${score}`;
+        boardGame.style.display = "block";
+        boardGame.innerHTML = `<button tabindex="-1" onclick="randomCardsAry()" id="btn">התחל</br>&#127918;</br>משחק חדש</button>`;
+      }
+    </script>
+  </body>
+</html>
