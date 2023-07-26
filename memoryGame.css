@@ -1,0 +1,37 @@
+@media screen and (max-width: 600px) {
+  #boardGame {
+    width: 400px;
+    height: 900px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+#time {
+  position: relative;
+  right: 20%;
+}
+#points {
+  position: relative;
+  left: 20%;
+}
+#boardGame {
+  width: 900px;
+  height: 600px;
+  margin: 0 auto;
+  display: block;
+  grid-template-columns: repeat(6, 1fr);
+  border: 2px black solid;
+  grid-gap: 0.5em;
+}
+#btn {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  width: 100%;
+  height: 100%;
+  background-color: wheat;
+  font-size: 400%;
+}
+.box {
+  font-size: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
